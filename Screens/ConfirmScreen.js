@@ -1,13 +1,27 @@
+import { Auth } from 'aws-amplify';
 import * as React from 'react';
 import {useState} from "react";
-import { Text, View, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Platform, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Platform, TouchableOpacity, Alert } from 'react-native';
 import COLORS from '../constants/COLORS';
 
+//Email is taken as username
 
-export default function RegisterScreen({navigation}) {
+export default function RegisterScreen({route, navigation}) {
 
-  const [username, setUsername]= useState("");
-  const [code, setCode]= useState("");
+  const { email } = route.params;
+  const [username, setUsername]= useState(email);
+  const [code, setCode]= useState( );
+
+  async function confirmSignUp() {
+    try {
+      await Auth.confirmSignUp(username, code);
+      Alert.alert('✅ Confirmation Successful');
+      navigation.navigate('LoginScreen');
+    } catch (error) {
+      Alert.alert('❌ Error confirming...', error.message);
+    }
+  }
+
 
   return (
     <SafeAreaView style={styles.container} onTouchStart={Keyboard.dismiss}>
@@ -15,12 +29,12 @@ export default function RegisterScreen({navigation}) {
 
       <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.inputFields}>
-          <TextInput value={username} onChangeText={(e) => setUsername(e)} placeholderTextColor={COLORS.grey} placeholder="Enter your Username" style={styles.input} />
+          <TextInput value={username} onChangeText={(e) => setUsername(e)} placeholderTextColor={COLORS.grey} placeholder="Enter your Email" style={styles.input} />
           <TextInput value={code} onChangeText={(e) => setCode(e)} placeholderTextColor={COLORS.grey} placeholder="Enter the Code" style={styles.input} />
     </KeyboardAvoidingView>
 
-    <TouchableOpacity style={styles.loginBtn}>
-      <Text style={styles.loginBtnText}>Login</Text>
+    <TouchableOpacity onPress={() => confirmSignUp()} style={styles.loginBtn}>
+      <Text style={styles.loginBtnText}>Confirm</Text>
     </TouchableOpacity>
     
     <TouchableOpacity style={styles.registerBtn}>

@@ -1,6 +1,7 @@
+import { Auth } from 'aws-amplify';
 import * as React from 'react';
 import {useState} from "react";
-import { Text, View, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Platform, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Platform, TouchableOpacity, Alert } from 'react-native';
 import COLORS from '../constants/COLORS';
 
 
@@ -9,17 +10,27 @@ export default function RegisterScreen({navigation}) {
   const [username, setUsername]= useState("");
   const [password, setPassword]= useState("");
 
+
+  async function signIn() {
+    try {
+      await Auth.signIn(username, password);
+      Alert.alert('✅ Sign-In Confirmed');
+    } catch (error) {
+      Alert.alert('❌ Error signing In...', error.message);
+    }
+}
+
   return (
     <SafeAreaView style={styles.container} onTouchStart={Keyboard.dismiss}>
       <Text style={styles.title}>Login</Text>
 
       <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.inputFields}>
-          <TextInput value={username} onChangeText={(e) => setUsername(e)} placeholderTextColor={COLORS.grey} placeholder="Enter your Name.." style={styles.input} />
-          <TextInput secureTextEntry={true} value={password} onChangeText={(e) => setPassword(e)} placeholderTextColor={COLORS.grey} placeholder="Enter your Username.." style={styles.input} />
+          <TextInput value={username} onChangeText={(e) => setUsername(e)} placeholderTextColor={COLORS.grey} placeholder="Enter your Email.." style={styles.input} />
+          <TextInput secureTextEntry={true} value={password} onChangeText={(e) => setPassword(e)} placeholderTextColor={COLORS.grey} placeholder="Enter your Password.." style={styles.input} />
     </KeyboardAvoidingView>
 
-    <TouchableOpacity style={styles.loginBtn}>
+    <TouchableOpacity onPress={() => signIn()} style={styles.loginBtn}>
       <Text style={styles.loginBtnText}>Login</Text>
     </TouchableOpacity>
     

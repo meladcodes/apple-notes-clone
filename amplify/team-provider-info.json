@@ -1,0 +1,25 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-applenotes-staging-93456-authRole",
+      "UnauthRoleArn": "arn:aws:iam::456917328851:role/amplify-applenotes-staging-93456-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::456917328851:role/amplify-applenotes-staging-93456-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-applenotes-staging-93456-deployment",
+      "UnauthRoleName": "amplify-applenotes-staging-93456-unauthRole",
+      "StackName": "amplify-applenotes-staging-93456",
+      "StackId": "arn:aws:cloudformation:eu-west-2:456917328851:stack/amplify-applenotes-staging-93456/130d4430-f46a-11ec-a506-0aea9b172160",
+      "AmplifyAppId": "dodrnjkohe9s3"
+    },
+    "categories": {
+      "auth": {
+        "applenotes": {}
+      },
+      "function": {
+        "applenotes8c2b83a3": {
+          "lambdaSaveUseToDb": "saveuser"
+        }
+      }
+    }
+  }
+}

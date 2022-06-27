@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "auth": {
+      "applenotes": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "lambdaSaveUseToDb",
+      "environmentVariableName": "LambdaSaveUseToDb"
+    }
+  ]
+}

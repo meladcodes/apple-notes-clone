@@ -1,16 +1,28 @@
+import { Auth } from 'aws-amplify';
 import * as React from 'react';
+import { useContext } from 'react';
 import {useState} from "react";
-import { Text, View, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Platform, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Platform, TouchableOpacity, Alert } from 'react-native';
 import COLORS from '../constants/COLORS';
+import { AuthContext, useAuth } from '../Context/AuthContext';
 
 
 export default function RegisterScreen({navigation}) {
 
   const [name, setName] = useState("");
-  const [uesrname, setUsername] = useState("");
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const signUp = async () => {
+    try {
+      await Auth.signUp({ username: email, password: password, attributes: {preferred_username: userName, name } })
+      Alert.alert('✅ Sign-up Confirmed');
+      navigation.navigate("ConfirmScreen", {email})
+    } catch (error) {
+      Alert.alert('❌ Error signing In...', error.message);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container} onTouchStart={Keyboard.dismiss}>
@@ -19,12 +31,12 @@ export default function RegisterScreen({navigation}) {
       <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.inputFields}>
           <TextInput value={name} onChangeText={(e) => setName(e)} placeholderTextColor={COLORS.grey} placeholder="Enter your Name.." style={styles.input} />
-          <TextInput value={uesrname} onChangeText={(e) => setUsername(e)} placeholderTextColor={COLORS.grey} placeholder="Enter your Username.." style={styles.input} />
+          <TextInput value={userName} onChangeText={(e) => setUserName(e)} placeholderTextColor={COLORS.grey} placeholder="Enter your Username.." style={styles.input} />
           <TextInput value={email} onChangeText={(e) => setEmail(e)} placeholderTextColor={COLORS.grey} placeholder="Enter your Email.." style={styles.input} />
           <TextInput secureTextEntry={true} value={password} onChangeText={(e) => setPassword(e)} placeholderTextColor={COLORS.grey} placeholder="Enter your Password.." style={styles.input} />
     </KeyboardAvoidingView>
 
-    <TouchableOpacity style={styles.registerBtn}>
+    <TouchableOpacity onPress={() => signUp()} style={styles.registerBtn}>
       <Text style={styles.registerBtnText}>Register</Text>
     </TouchableOpacity>
     

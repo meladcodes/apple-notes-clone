@@ -1,0 +1,22 @@
+type Folder @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  Notes: [Note] @hasMany(indexName: "byFolder", fields: ["id"])
+  userID: ID! @index(name: "byUser")
+}
+
+type Note @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  content: String
+  name: String
+  folderID: ID! @index(name: "byFolder")
+  userID: ID! @index(name: "byUser")
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  email: String
+  Folders: [Folder] @hasMany(indexName: "byUser", fields: ["id"])
+  Notes: [Note] @hasMany(indexName: "byUser", fields: ["id"])
+}
